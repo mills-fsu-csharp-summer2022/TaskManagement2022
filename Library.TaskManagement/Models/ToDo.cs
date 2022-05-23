@@ -7,7 +7,7 @@
         public DateTime Deadline { get; set; }
         public int AssignedUser { get; set; }
         public bool Completed { get; set; }
-
+        public int Id { get; set; }
         public ToDo()
         {
 
@@ -15,7 +15,7 @@
 
         public override string ToString()
         {
-            return $"{Deadline:d} - {Name} :: {Description}";
+            return $"{Id} {Deadline:d} - {Name} :: {Description}";
         }
     }
 }
