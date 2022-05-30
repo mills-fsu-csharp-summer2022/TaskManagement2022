@@ -11,7 +11,7 @@ namespace MyApp // Note: actual namespace depends on the project name.
         {
             Console.WriteLine("Welcome to the Task Management App for 2022!");
             //set up a list of todo items
-            var toDoService = ToDoService.Current;
+            var toDoService = ItemService.Current;
 
             bool cont = true;
             while(cont)
@@ -21,22 +21,34 @@ namespace MyApp // Note: actual namespace depends on the project name.
 
                 if(action == ActionType.Create)
                 {
-                    Console.WriteLine("You chose to add a task");
-                    var newToDo = new ToDo();
-                    FillToDo(newToDo);
-                    toDoService.Create(newToDo);
+                    Console.WriteLine("Would you like to create a ToDo or an Appointment?");
+                    Console.WriteLine("1. Create a ToDo");
+                    Console.WriteLine("2. Create an Appointment");
+                    var typeChoice = int.Parse(Console.ReadLine() ?? "0");
+                    Item? newItem = null;
+                    if(typeChoice == 1)
+                    {
+                        newItem = new ToDo();
+                    } else
+                    {
+                        newItem = new Appointment();
+                    }
+
+                    FillToDo(newItem);
+                    toDoService.Create(newItem);
+
                 } else if (action == ActionType.Read)
                 {
                     Console.WriteLine("You chose to list all tasks");
-                    for (int i = 0; i < toDoService.ToDos.Count; i++)
+                    for (int i = 0; i < toDoService.Items.Count; i++)
                     {
-                        var toDo = toDoService.ToDos[i];
+                        var toDo = toDoService.Items[i];
                         Console.WriteLine($"{toDo}");
                     }
                 } else if (action == ActionType.ReadIncomplete)
                 {
                     Console.WriteLine("You chose to list all incomplete tasks");
-                    foreach (var todo in toDoService.ToDos.Where(t => !t.Completed))
+                    foreach (var todo in toDoService.Items.Where(t => !t.Completed))
                     {
                         Console.WriteLine($"{todo}");   
                     }
@@ -47,7 +59,7 @@ namespace MyApp // Note: actual namespace depends on the project name.
                     Console.WriteLine("Which task would you like to update?");
                     var choice = int.Parse(Console.ReadLine() ?? "0");
 
-                    var todoOfInterest = toDoService.ToDos.FirstOrDefault(t => t.Id == choice);
+                    var todoOfInterest = toDoService.Items.FirstOrDefault(t => t.Id == choice);
                     FillToDo(todoOfInterest);
                     toDoService.Update(todoOfInterest);
                 }
@@ -76,20 +88,37 @@ namespace MyApp // Note: actual namespace depends on the project name.
             Console.WriteLine("Thank you for using the Task Management App!");
         }
 
-        public static void FillToDo(ToDo? todo)
+        public static void FillToDo(Item? item)
         {
-            if(todo == null)
+            if(item == null)
             {
                 return;
             }
-
             Console.WriteLine("What is the name for the task?");
-            todo.Name = Console.ReadLine() ?? string.Empty;
+            item.Name = Console.ReadLine() ?? string.Empty;
             Console.WriteLine("What is the description for the task?");
-            todo.Description = Console.ReadLine() ?? string.Empty;
-            Console.WriteLine("What is the deadline for the task?");
-            todo.Deadline = DateTime.Parse(Console.ReadLine() ?? "2022-01-01");
-            todo.AssignedUser = 1;
+            item.Description = Console.ReadLine() ?? string.Empty;
+
+
+            if(item is ToDo)
+            {
+                var todo = item as ToDo;
+                if(todo != null)
+                {
+                    Console.WriteLine("What is the deadline for the task?");
+                    todo.Deadline = DateTime.Parse(Console.ReadLine() ?? "2022-01-01");
+                    todo.AssignedUser = 1;
+                }
+            } else if(item is Appointment)
+            {
+                var appointment = item as Appointment;
+                if(appointment != null)
+                {
+                    Console.WriteLine("What is the start time for the Appointment?");
+                    appointment.Start = DateTime.Parse(Console.ReadLine() ?? "2022-01-01");
+                }
+            }
+
         }
 
         public static ActionType PrintMenu()
@@ -138,5 +167,10 @@ namespace MyApp // Note: actual namespace depends on the project name.
     public enum ActionType
     {
         Create, Read, ReadIncomplete, Update, Delete, Exit, Save, Load
+    }
+
+    public enum ItemType
+    {
+        Todo, Appointment
     }
 }

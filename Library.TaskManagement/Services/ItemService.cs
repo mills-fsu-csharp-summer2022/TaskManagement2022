@@ -9,14 +9,14 @@ using System.Threading.Tasks;
 namespace Library.TaskManagement.Services
 {
 
-    public class ToDoService
+    public class ItemService
     {
-        private List<ToDo> toDoList;
-        public List<ToDo> ToDos
+        private List<Item> itemList;
+        public List<Item> Items
         {
             get
             {
-                return toDoList;
+                return itemList;
             }
         }
 
@@ -24,66 +24,66 @@ namespace Library.TaskManagement.Services
         {
             get
             {
-                if(!ToDos.Any())
+                if(!Items.Any())
                 {
                     return 1;
                 }
 
-                return ToDos.Select(t => t.Id).Max() + 1;
+                return Items.Select(t => t.Id).Max() + 1;
             }
         }
 
-        private static ToDoService current;
+        private static ItemService current;
 
-        public static ToDoService Current
+        public static ItemService Current
         {
             get
             {
                 if(current == null)
                 {
-                    current = new ToDoService();
+                    current = new ItemService();
                 }
 
                 return current;
             }
         }
 
-        private ToDoService()
+        private ItemService()
         {
-            toDoList = new List<ToDo>();
+            itemList = new List<Item>();
         }
 
-        public void Create(ToDo todo)
+        public void Create(Item todo)
         {
             todo.Id = NextId;
-            ToDos.Add(todo);
+            Items.Add(todo);
         }
 
-        public void Update(ToDo? todo)
+        public void Update(Item? todo)
         {
 
         }
 
         public void Delete(int id)
         {
-            var todoToDelete = toDoList.FirstOrDefault(t => t.Id == id);
+            var todoToDelete = itemList.FirstOrDefault(t => t.Id == id);
             if(todoToDelete == null)
             {
                 return;
             }
-            toDoList.Remove(todoToDelete);
+            itemList.Remove(todoToDelete);
         }
 
         public void Load(string fileName)
         {
             var todosJson = File.ReadAllText(fileName);
-            toDoList = JsonConvert.DeserializeObject<List<ToDo>>(todosJson) ?? new List<ToDo>();
+            itemList = JsonConvert.DeserializeObject<List<Item>>(todosJson) ?? new List<Item>();
 
         }
 
         public void Save(string fileName)
         {
-            var todosJson = JsonConvert.SerializeObject(toDoList);
+            var todosJson = JsonConvert.SerializeObject(itemList);
             File.WriteAllText(fileName, todosJson);
         }
     }

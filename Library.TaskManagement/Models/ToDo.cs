@@ -1,13 +1,14 @@
-﻿namespace Library.TaskManagement.Models
+﻿using Library.TaskManagement.Interfaces;
+
+namespace Library.TaskManagement.Models
 {
-    public partial class ToDo
+    public partial class ToDo: Item
     {
-        public string Name { get; set; }
-        public string Description { get; set; }
+
         public DateTime Deadline { get; set; }
         public int AssignedUser { get; set; }
         public bool Completed { get; set; }
-        public int Id { get; set; }
+
         public ToDo()
         {
 
