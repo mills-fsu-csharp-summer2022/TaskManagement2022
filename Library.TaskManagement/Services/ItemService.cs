@@ -1,4 +1,5 @@
 ﻿using Library.TaskManagement.Models;
+using Library.TaskManagement.Utility;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,7 @@ namespace Library.TaskManagement.Services
 
     public class ItemService
     {
+        private ListNavigator<Item> listNavigator;
         private List<Item> itemList;
         public List<Item> Items
         {
@@ -51,6 +53,8 @@ namespace Library.TaskManagement.Services
         private ItemService()
         {
             itemList = new List<Item>();
+
+            listNavigator = new ListNavigator<Item>(itemList);
         }
 
         public void Create(Item todo)
