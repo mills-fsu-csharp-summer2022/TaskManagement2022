@@ -48,10 +48,10 @@ namespace MyApp // Note: actual namespace depends on the project name.
                 } else if (action == ActionType.ReadIncomplete)
                 {
                     Console.WriteLine("You chose to list all incomplete tasks");
-                    foreach (var todo in toDoService.Items.Where(t => !t.Completed))
+                    /*foreach (var todo in toDoService.Items.Where(t => !t.Completed))
                     {
                         Console.WriteLine($"{todo}");   
-                    }
+                    }*/
                 }
                 else if(action == ActionType.Update)
                 {
