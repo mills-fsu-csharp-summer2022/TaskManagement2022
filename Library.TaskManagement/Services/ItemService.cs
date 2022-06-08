@@ -26,7 +26,7 @@ namespace Library.TaskManagement.Services
         {
             get
             {
-                if(!Items.Any())
+                if (!Items.Any())
                 {
                     return 1;
                 }
@@ -41,7 +41,7 @@ namespace Library.TaskManagement.Services
         {
             get
             {
-                if(current == null)
+                if (current == null)
                 {
                     current = new ItemService();
                 }
@@ -71,7 +71,7 @@ namespace Library.TaskManagement.Services
         public void Delete(int id)
         {
             var todoToDelete = itemList.FirstOrDefault(t => t.Id == id);
-            if(todoToDelete == null)
+            if (todoToDelete == null)
             {
                 return;
             }
@@ -81,14 +81,48 @@ namespace Library.TaskManagement.Services
         public void Load(string fileName)
         {
             var todosJson = File.ReadAllText(fileName);
-            itemList = JsonConvert.DeserializeObject<List<Item>>(todosJson) ?? new List<Item>();
+            itemList = JsonConvert.DeserializeObject<List<Item>>
+                (todosJson, new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All })
+                ?? new List<Item>();
 
         }
 
         public void Save(string fileName)
         {
-            var todosJson = JsonConvert.SerializeObject(itemList);
+            var todosJson = JsonConvert.SerializeObject(itemList
+                , new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All });
             File.WriteAllText(fileName, todosJson);
         }
+
+        //GROSS
+        //public IEnumerable<Item> Search(string query)
+        //{
+        //    return Items.Where(i => i.Description.Contains(query) || i.Name.Contains(query));
+        //}
+
+        //Stateful Implementation
+        private string _query;
+        private bool _sort;
+
+        public IEnumerable<Item> Search(string query)
+        {
+            _query = query;
+            return ProcessedList;
+        }
+
+        public IEnumerable<Item> ProcessedList{
+            get
+            {
+                if(string.IsNullOrEmpty(_query))
+                {
+                    return Items;
+                }
+                return Items
+                    .Where(i => string.IsNullOrEmpty(_query) ||( i.Description.Contains(_query)
+                        || i.Name.Contains(_query))) //search
+                    .OrderBy(i => i.Name);          //sort
+            }
+        }
+
     }
 }

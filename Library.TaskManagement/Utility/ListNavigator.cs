@@ -8,14 +8,14 @@ namespace Library.TaskManagement.Utility
     {
         private int pageSize;
         private int currentPage;
-        private List<T> state;
+        private IEnumerable<T> state;
         private int lastPage
         {
             get
             {
-                var val = state.Count / pageSize;
+                var val = state.Count() / pageSize;
 
-                if (state.Count % pageSize > 0)
+                if (state.Count() % pageSize > 0)
                 {
                     //if there is a partial page at the end, that is the actual last page.
                     val++;
@@ -41,7 +41,7 @@ namespace Library.TaskManagement.Utility
             }
 
         }
-        public ListNavigator(List<T> list, int pageSize = 5)
+        public ListNavigator(IEnumerable<T> list, int pageSize = 5)
         {
             this.pageSize = pageSize;
             this.currentPage = 1;
@@ -100,7 +100,7 @@ namespace Library.TaskManagement.Utility
             var window = new Dictionary<int, T>();
             for (int i = (currentPage - 1) * pageSize; i < (currentPage - 1) * pageSize + pageSize && i < state.Count; i++)
             {
-                window.Add(i + 1, state[i]);
+                window.Add(i + 1, state.ElementAt(i));
             }
 
             return window;
