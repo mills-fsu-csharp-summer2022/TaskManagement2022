@@ -4,24 +4,11 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:ToDoApplication.UWP"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:viewmodels="using:ToDoApplication.UWP.ViewModels" d:DataContext="{d:DesignInstance Type=viewmodels:MainViewModel}"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
-        <!--<Grid.RowDefinitions>
-            <RowDefinition/>
-            <RowDefinition/>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
-
-        <Button Grid.Row="0" Grid.Column="0" Content="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"></Button>
-        <Button Grid.Row="0" Grid.Column="1" Content="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"></Button>
-        <Button Grid.Row="1" Grid.Column="0" Content="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"></Button>
-        <Button Grid.Row="1" Grid.Column="1" Content="4" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"></Button>-->
         <Grid.RowDefinitions>
             <RowDefinition/> <!--Search Bar-->
             <RowDefinition Height="17*"/> <!--List View-->
@@ -36,7 +23,31 @@
             <Button Grid.Column="1" Content="Search" HorizontalAlignment="Stretch" Click="Search_Click"></Button>
         </Grid>
         <Grid Grid.Row="1">
-            <ListBox ItemsSource="{Binding Path=Items,Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding Path=SelectedItem, Mode=TwoWay}"></ListBox>
+            <ListBox ItemsSource="{Binding Path=Items,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding Path=SelectedItem, Mode=TwoWay}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Grid.Row="0" FontSize="18" Text="{Binding Path=Id, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBlock>
+
+                            <Grid Grid.Row="1">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock Grid.Column="0" Text="{Binding Path=Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBlock>
+                                <TextBlock Grid.Column="1" Text="{Binding Path=Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBlock>
+
+                            </Grid>
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
         </Grid>
         <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
@@ -45,8 +56,8 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <Button Content="Add Task" Grid.Column="0" HorizontalAlignment="Stretch" Click="Add_Click"></Button>
-            <Button Content="Edit Task" Grid.Column="1" HorizontalAlignment="Stretch"></Button>
-            <Button Content="Delete Task" Grid.Column="2" HorizontalAlignment="Stretch"></Button>
+            <Button Content="Edit Task" Grid.Column="1" HorizontalAlignment="Stretch" Click="Edit_Click"></Button>
+            <Button Content="Delete Task" Grid.Column="2" HorizontalAlignment="Stretch" Click="Remove_Click"></Button>
         </Grid>
     </Grid>
 </Page>

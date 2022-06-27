@@ -6,6 +6,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using ToDoApplication.UWP.ViewModels;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -30,9 +31,21 @@ namespace ToDoApplication.UWP.Dialogs
 
         }
 
+        public ToDoDialog(Item selectedItem)
+        {
+            this.InitializeComponent();
+            this.DataContext = selectedItem;
+        }
+
         private void ContentDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
         {
-            ItemService.Current.Create(DataContext as ToDo);
+            //step 1: coerce datacontext into view model
+            var viewModel = DataContext as ItemViewModel;
+
+            //step 2: use a conversion constructor from view model -> todo
+
+            //step 3: interact with the service using models;
+            ItemService.Current.AddOrUpdate(DataContext as ToDo);
         }
 
         private void ContentDialog_SecondaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)

@@ -129,6 +129,7 @@
     <Compile Include="SecondaryPage.xaml.cs">
       <DependentUpon>SecondaryPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\ItemViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
   </ItemGroup>
   <ItemGroup>

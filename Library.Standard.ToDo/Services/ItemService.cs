@@ -58,14 +58,13 @@ namespace Library.TaskManagement.Services
             listNavigator = new ListNavigator<Item>(itemList);
         }
 
-        public void Create(Item todo)
+        public void AddOrUpdate(Item todo)
         {
-            todo.Id = NextId;
-            Items.Add(todo);
-        }
-
-        public void Update(Item todo)
-        {
+            if (todo.Id <= 0)
+            {
+                todo.Id = NextId;
+                Items.Add(todo);
+            }
 
         }
 

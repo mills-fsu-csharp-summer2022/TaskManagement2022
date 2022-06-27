@@ -11,6 +11,9 @@
             return $"{Id} {Name} :: {Description}";
         }
 
+        //public Item(ItemViewModel ivm)
+        //{
 
+        //}
     }
 }
