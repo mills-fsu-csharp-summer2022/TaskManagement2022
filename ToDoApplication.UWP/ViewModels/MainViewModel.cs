@@ -4,9 +4,11 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using ToDoApplication.UWP.Dialogs;
+using Windows.UI.Xaml.Controls;
 
 namespace ToDoApplication.UWP.ViewModels
 {
@@ -25,7 +27,18 @@ namespace ToDoApplication.UWP.ViewModels
                 {
                     return new ObservableCollection<Item>();
                 }
-                return new ObservableCollection<Item>(_itemService.Items);
+
+                if(string.IsNullOrEmpty(Query))
+                {
+                    return new ObservableCollection<Item>(_itemService.Items);
+                } else
+                {
+                    return new ObservableCollection<Item>(
+                        _itemService.Items.Where(i => i.Name.ToUpper().Contains(Query.ToUpper())
+                            || i.Description.ToUpper().Contains(Query.ToUpper())
+                        ));
+                }
+                
             }
         }
 
@@ -40,9 +53,20 @@ namespace ToDoApplication.UWP.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public async Task Add()
+        public async Task Add(ItemType iType)
         {
-            var diag = new ToDoDialog();
+            ContentDialog diag = null;
+            if(iType == ItemType.Task)
+            {
+                diag = new ToDoDialog();
+            } else if(iType == ItemType.Appointment)
+            {
+                diag = new AppointmentDialog();
+            } else
+            {
+                throw new NotImplementedException();
+            }
+
             await diag.ShowAsync();
             NotifyPropertyChanged("Items");
         }
@@ -73,5 +97,25 @@ namespace ToDoApplication.UWP.ViewModels
             }
 
         }
+
+        public void Save()
+        {
+            _itemService.Save();
+        }
+
+        public void Load()
+        {
+            _itemService.Load();
+            NotifyPropertyChanged("Items");
+        }
+
+        public void Refresh()
+        {
+            NotifyPropertyChanged("Items");
+        }
+    }
+
+    public enum ItemType{
+        Task, Appointment
     }
 }

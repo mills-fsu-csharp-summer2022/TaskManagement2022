@@ -23,15 +23,24 @@ namespace ToDoApplication.UWP
 
         private void Search_Click(object sender, RoutedEventArgs e)
         {
-
+            (DataContext as MainViewModel).Refresh();
         }
 
-        private async void Add_Click(object sender, RoutedEventArgs e)
+        private async void Add_Task_Click(object sender, RoutedEventArgs e)
         {
             var vm = DataContext as MainViewModel;
             if (vm != null)
             {
-                await vm.Add();
+                await vm.Add(ItemType.Task);
+            }
+        }
+
+        private async void Add_App_Click(object sender, RoutedEventArgs e)
+        {
+            var vm = DataContext as MainViewModel;
+            if (vm != null)
+            {
+                await vm.Add(ItemType.Appointment);
             }
         }
 
@@ -51,6 +60,16 @@ namespace ToDoApplication.UWP
             {
                 vm.Update();
             }
+        }
+
+        private void Save_Click(object sender, RoutedEventArgs e)
+        {
+            (DataContext as MainViewModel).Save();
+        }
+
+        private void Load_Click(object sender, RoutedEventArgs e)
+        {
+            (DataContext as MainViewModel).Load();
         }
     }
 }

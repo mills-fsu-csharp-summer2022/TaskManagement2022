@@ -13,6 +13,8 @@ namespace Library.TaskManagement.Services
 
     public class ItemService
     {
+        private string persistPath 
+            = $"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}";
         private ListNavigator<Item> listNavigator;
         private List<Item> itemList;
         public List<Item> Items
@@ -56,6 +58,7 @@ namespace Library.TaskManagement.Services
             itemList = new List<Item>();
 
             listNavigator = new ListNavigator<Item>(itemList);
+
         }
 
         public void AddOrUpdate(Item todo)
@@ -78,8 +81,17 @@ namespace Library.TaskManagement.Services
             itemList.Remove(todoToDelete);
         }
 
-        public void Load(string fileName)
+        public void Load(string fileName = null)
         {
+            if (string.IsNullOrEmpty(fileName))
+            {
+                fileName = $"{persistPath}\\SaveData.json";
+            }
+            else
+            {
+                fileName = $"{persistPath}\\{fileName}.json";
+            }
+
             var todosJson = File.ReadAllText(fileName);
             itemList = JsonConvert.DeserializeObject<List<Item>>
                 (todosJson, new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All })
@@ -87,8 +99,15 @@ namespace Library.TaskManagement.Services
 
         }
 
-        public void Save(string fileName)
+        public void Save(string fileName = null)
         {
+            if(string.IsNullOrEmpty(fileName))
+            {
+                fileName = $"{persistPath}\\SaveData.json";
+            } else
+            {
+                fileName = $"{persistPath}\\{fileName}.json";
+            }
             var todosJson = JsonConvert.SerializeObject(itemList
                 , new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All });
             File.WriteAllText(fileName, todosJson);

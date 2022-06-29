@@ -10,20 +10,36 @@
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition/> <!--Search Bar-->
-            <RowDefinition Height="17*"/> <!--List View-->
-            <RowDefinition/> <!-- Button Bar-->
+            <RowDefinition/>
+            <!--Search Bar-->
+            <RowDefinition Height="17*"/>
+            <!--List View-->
+            <RowDefinition/>
+            <!-- Button Bar-->
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
                 <ColumnDefinition Width="10*"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <TextBox Grid.Column="0" Text="{Binding Path=Query, Mode=TwoWay}"></TextBox>
-            <Button Grid.Column="1" Content="Search" HorizontalAlignment="Stretch" Click="Search_Click"></Button>
+            <Grid Grid.Column="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="0" Content="Save" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="Save_Click"></Button>
+                <Button Grid.Column="1" Content="Load" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="Load_Click"></Button>
+            </Grid>
+            <TextBox Grid.Column="1" Text="{Binding Path=Query, Mode=TwoWay}"></TextBox>
+            <Button Grid.Column="2" Content="Search" HorizontalAlignment="Stretch" Click="Search_Click"></Button>
         </Grid>
         <Grid Grid.Row="1">
-            <ListBox ItemsSource="{Binding Path=Items,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding Path=SelectedItem, Mode=TwoWay}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="94*"/>
+                <ColumnDefinition Width="281*"/>
+            </Grid.ColumnDefinitions>
+            <ListBox ItemsSource="{Binding Path=Items,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding Path=SelectedItem, Mode=TwoWay}" Grid.ColumnSpan="2">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <Grid>
@@ -55,7 +71,15 @@
                 <ColumnDefinition/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <Button Content="Add Task" Grid.Column="0" HorizontalAlignment="Stretch" Click="Add_Click"></Button>
+            <Grid Grid.Column="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Button Content="Add Task" Grid.Column="0" HorizontalAlignment="Stretch" Click="Add_Task_Click"></Button>
+                <Button Content="Add Appointment" Grid.Column="1" HorizontalAlignment="Stretch" Click="Add_App_Click"></Button>
+            </Grid>
+            
             <Button Content="Edit Task" Grid.Column="1" HorizontalAlignment="Stretch" Click="Edit_Click"></Button>
             <Button Content="Delete Task" Grid.Column="2" HorizontalAlignment="Stretch" Click="Remove_Click"></Button>
         </Grid>
