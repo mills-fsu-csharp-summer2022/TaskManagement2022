@@ -54,10 +54,11 @@
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition/>
                                     <ColumnDefinition/>
+                                    <ColumnDefinition/>
                                 </Grid.ColumnDefinitions>
-
-                                <TextBlock Grid.Column="0" Text="{Binding Path=Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBlock>
-                                <TextBlock Grid.Column="1" Text="{Binding Path=Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBlock>
+                                <CheckBox Grid.Column="0" Visibility="{Binding Path=IsCompletable}"></CheckBox>
+                                <TextBlock Grid.Column="1" Text="{Binding Path=Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBlock>
+                                <TextBlock Grid.Column="2" Text="{Binding Path=Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBlock>
 
                             </Grid>
                         </Grid>
@@ -75,9 +76,11 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
                     <ColumnDefinition/>
+                    <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
                 <Button Content="Add Task" Grid.Column="0" HorizontalAlignment="Stretch" Click="Add_Task_Click"></Button>
                 <Button Content="Add Appointment" Grid.Column="1" HorizontalAlignment="Stretch" Click="Add_App_Click"></Button>
+                <Button Content="Add Item" Grid.Column="2" HorizontalAlignment="Stretch" Click="Add_Item_Click"/>
             </Grid>
             
             <Button Content="Edit Task" Grid.Column="1" HorizontalAlignment="Stretch" Click="Edit_Click"></Button>

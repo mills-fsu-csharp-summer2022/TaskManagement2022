@@ -44,6 +44,15 @@ namespace ToDoApplication.UWP
             }
         }
 
+        private async void Add_Item_Click(object sender, RoutedEventArgs e)
+        {
+            var vm = DataContext as MainViewModel;
+            if (vm != null)
+            {
+                await vm.Add(ItemType.Item);
+            }
+        }
+
         private void Remove_Click(object sender, RoutedEventArgs e)
         {
             var vm = DataContext as MainViewModel;

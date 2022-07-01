@@ -16,27 +16,27 @@ namespace ToDoApplication.UWP.ViewModels
     {
 
         public string Query { get; set; }
-        public Item SelectedItem { get; set; }
+        public ItemViewModel SelectedItem { get; set; }
         private ItemService _itemService;
 
-        public ObservableCollection<Item> Items
+        public ObservableCollection<ItemViewModel> Items
         {
             get
             {
                 if (_itemService == null)
                 {
-                    return new ObservableCollection<Item>();
+                    return new ObservableCollection<ItemViewModel>();
                 }
 
                 if(string.IsNullOrEmpty(Query))
                 {
-                    return new ObservableCollection<Item>(_itemService.Items);
+                    return new ObservableCollection<ItemViewModel>(_itemService.Items.Select(i => new ItemViewModel(i)));
                 } else
                 {
-                    return new ObservableCollection<Item>(
+                    return new ObservableCollection<ItemViewModel>(
                         _itemService.Items.Where(i => i.Name.ToUpper().Contains(Query.ToUpper())
-                            || i.Description.ToUpper().Contains(Query.ToUpper())
-                        ));
+                            || i.Description.ToUpper().Contains(Query.ToUpper()))
+                        .Select(i => new ItemViewModel(i)));
                 }
                 
             }
@@ -62,7 +62,10 @@ namespace ToDoApplication.UWP.ViewModels
             } else if(iType == ItemType.Appointment)
             {
                 diag = new AppointmentDialog();
-            } else
+            } else if (iType == ItemType.Item)
+            {
+                diag = new ItemDialog();
+            }else
             {
                 throw new NotImplementedException();
             }
@@ -83,15 +86,19 @@ namespace ToDoApplication.UWP.ViewModels
 
         public async void Update()
         {
-            //var id = SelectedItem?.Id ?? -1;
-            //if (id >= 1)
-            //{
-            //    _itemService.Update(SelectedItem);
-            //}
-            //NotifyPropertyChanged("Items");
             if(SelectedItem != null)
             {
-                var diag = new ToDoDialog(SelectedItem);
+                ContentDialog diag = new ItemDialog(SelectedItem);
+                //if(SelectedItem.IsToDo)
+                //{
+                //    diag = new ToDoDialog(SelectedItem.BoundToDo);
+                //} else if(SelectedItem.IsAppointment)
+                //{
+                //    diag = new AppointmentDialog(SelectedItem.BoundAppointment);
+                //}
+
+
+                
                 await diag.ShowAsync();
                 NotifyPropertyChanged("Items");
             }
@@ -116,6 +123,6 @@ namespace ToDoApplication.UWP.ViewModels
     }
 
     public enum ItemType{
-        Task, Appointment
+        Task, Appointment, Item
     }
 }

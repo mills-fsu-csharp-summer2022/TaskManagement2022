@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Library.TaskManagement.Models;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -20,6 +21,11 @@ namespace ToDoApplication.UWP.Dialogs
     public sealed partial class AppointmentDialog : ContentDialog
     {
         public AppointmentDialog()
+        {
+            this.InitializeComponent();
+        }
+
+        public AppointmentDialog(Appointment a)
         {
             this.InitializeComponent();
         }

@@ -122,6 +122,9 @@
     <Compile Include="Dialogs\AppointmentDialog.xaml.cs">
       <DependentUpon>AppointmentDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Dialogs\ItemDialog.xaml.cs">
+      <DependentUpon>ItemDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Dialogs\ToDoDialog.xaml.cs">
       <DependentUpon>ToDoDialog.xaml</DependentUpon>
     </Compile>
@@ -156,6 +159,10 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Page Include="Dialogs\AppointmentDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Dialogs\ItemDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

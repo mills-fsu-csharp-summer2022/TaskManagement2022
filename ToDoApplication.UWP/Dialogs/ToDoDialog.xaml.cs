@@ -40,7 +40,7 @@ namespace ToDoApplication.UWP.Dialogs
         private void ContentDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
         {
             //step 1: coerce datacontext into view model
-            var viewModel = DataContext as ItemViewModel;
+            var viewModel = DataContext as ToDo;
 
             //step 2: use a conversion constructor from view model -> todo
 
