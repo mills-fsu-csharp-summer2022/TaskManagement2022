@@ -16,8 +16,18 @@
         <Grid.RowDefinitions>
             <RowDefinition/>
             <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <RadioButton Grid.Column="0" GroupName="ItemType" Content="Appointment" IsChecked="{Binding Path=IsAppointment, Mode=TwoWay}"></RadioButton>
+            <RadioButton Grid.Column="1" GroupName="ItemType" Content="ToDo" IsChecked="{Binding Path=IsToDo, Mode=TwoWay}"/>
+        </Grid>
+        <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition/>
@@ -25,13 +35,19 @@
             <TextBlock Grid.Column="0" Text="Title"></TextBlock>
             <TextBox Grid.Column="1" Text="{Binding Path=Name, Mode=TwoWay}"/>
         </Grid>
-        <Grid Grid.Row="1">
+        <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <TextBlock Grid.Column="0" Text="Description"></TextBlock>
             <TextBox Grid.Column="1" Text="{Binding Path=Description, Mode=TwoWay}"/>
+        </Grid>
+        <Grid Grid.Row="3" Visibility="{Binding Path=IsToDoCardVisible, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+            <TextBlock Text="THIS IS A TODO"></TextBlock>   
+        </Grid>
+        <Grid Grid.Row="3" Visibility="{Binding Path=IsAppointmentCardVisible, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+            <TextBlock Text="THIS IS AN APPOINTMENT"></TextBlock>
         </Grid>
     </Grid>
 </ContentDialog>

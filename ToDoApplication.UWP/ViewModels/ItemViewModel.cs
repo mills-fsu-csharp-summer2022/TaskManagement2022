@@ -89,11 +89,40 @@ namespace ToDoApplication.UWP.ViewModels
             }
         }
 
+        public Visibility IsToDoCardVisible
+        {
+            get
+            {
+                return BoundToDo == null && BoundAppointment != null ? Visibility.Collapsed : Visibility.Visible;
+            }
+        }
+
+        public Visibility IsAppointmentCardVisible
+        {
+            get
+            {
+                return BoundAppointment == null && BoundToDo != null ? Visibility.Collapsed : Visibility.Visible;
+            }
+        }
+
         public bool IsAppointment
         {
             get
             {
                 return BoundAppointment != null;
+            }
+
+            set
+            {
+                if(value)
+                {
+                    boundAppointment = new Appointment();
+                    boundToDo = null;
+                    NotifyPropertyChanged("IsCompletable");
+                    NotifyPropertyChanged("IsAppointmentCardVisible");
+                    NotifyPropertyChanged("IsToDoCardVisible");
+                }
+
             }
         }
 
@@ -102,6 +131,18 @@ namespace ToDoApplication.UWP.ViewModels
             get
             {
                 return BoundToDo != null;
+            }
+
+            set
+            {
+                if(value)
+                {
+                    boundToDo = new ToDo();
+                    boundAppointment = null;
+                    NotifyPropertyChanged("IsCompletable");
+                    NotifyPropertyChanged("IsAppointmentCardVisible");
+                    NotifyPropertyChanged("IsToDoCardVisible");
+                }
             }
         }
 
