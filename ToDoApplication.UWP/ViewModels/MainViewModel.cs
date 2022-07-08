@@ -18,11 +18,12 @@ namespace ToDoApplication.UWP.ViewModels
         public string Query { get; set; }
         public ItemViewModel SelectedItem { get; set; }
         private ItemService _itemService;
-
+        public bool IsSortByName { get; set; }
         public ObservableCollection<ItemViewModel> Items
         {
             get
             {
+                IEnumerable<ItemViewModel> returnList = null; 
                 if (_itemService == null)
                 {
                     return new ObservableCollection<ItemViewModel>();
@@ -30,17 +31,24 @@ namespace ToDoApplication.UWP.ViewModels
 
                 if(string.IsNullOrEmpty(Query))
                 {
-                    return new ObservableCollection<ItemViewModel>(_itemService.Items.Select(i => new ItemViewModel(i)));
+                    returnList = _itemService.Items.Select(i => new ItemViewModel(i));
                 } else
                 {
-                    return new ObservableCollection<ItemViewModel>(
-                        _itemService.Items.Where(i => i.Name.ToUpper().Contains(Query.ToUpper())
+                    returnList = _itemService.Items.Where(i => i.Name.ToUpper().Contains(Query.ToUpper())
                             || i.Description.ToUpper().Contains(Query.ToUpper()))
-                        .Select(i => new ItemViewModel(i)));
+                        .Select(i => new ItemViewModel(i));
                 }
                 
+                if(IsSortByName)
+                {
+                    return new ObservableCollection<ItemViewModel>(returnList.OrderBy(i => i.Name));
+                }
+
+                return new ObservableCollection<ItemViewModel>(returnList);
             }
         }
+
+
 
         public MainViewModel()
         {
