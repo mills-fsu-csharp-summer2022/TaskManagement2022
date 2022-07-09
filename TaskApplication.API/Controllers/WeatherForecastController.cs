@@ -18,16 +18,27 @@ namespace TaskApplication.API.Controllers
             _logger = logger;
         }
 
-        [HttpGet(Name = "GetWeatherForecast")]
-        public IEnumerable<WeatherForecast> Get()
+        [HttpGet]
+        public string Get()
         {
-            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
+            return "Hello, World!";
+        }
+
+        [HttpGet("Number")]
+        public int GetNumber()
+        {
+            return GetNumber(0);
+        }
+
+        [HttpGet("Number/{id}")]
+        public int GetNumber(int id)
+        {
+            if(id == 0)
             {
-                Date = DateTime.Now.AddDays(index),
-                TemperatureC = Random.Shared.Next(-20, 55),
-                Summary = Summaries[Random.Shared.Next(Summaries.Length)]
-            })
-            .ToArray();
+                var rng = new Random();
+                return rng.Next();
+            }
+            return id;
         }
     }
 }
