@@ -1,4 +1,5 @@
-﻿using Library.TaskManagement.Models;
+﻿using Library.Standard.ToDo.Utility;
+using Library.TaskManagement.Models;
 using Library.TaskManagement.Utility;
 using Newtonsoft.Json;
 using System;
@@ -21,6 +22,7 @@ namespace Library.TaskManagement.Services
         {
             get
             {
+                var itemsJson = new WebRequestHandler().Get("http://localhost:5017/WeatherForecast");
                 return itemList;
             }
         }
@@ -55,7 +57,8 @@ namespace Library.TaskManagement.Services
 
         private ItemService()
         {
-            itemList = new List<Item>();
+            var todosJson = new WebRequestHandler().Get("http://localhost:5017/ToDo").Result;
+            itemList = JsonConvert.DeserializeObject<List<Item>>(todosJson);
 
             listNavigator = new ListNavigator<Item>(itemList);
 
