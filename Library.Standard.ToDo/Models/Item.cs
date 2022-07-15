@@ -1,5 +1,9 @@
-﻿namespace Library.TaskManagement.Models
+﻿using Library.Standard.ToDo.Utility;
+using Newtonsoft.Json;
+
+namespace Library.TaskManagement.Models
 {
+    [JsonConverter(typeof(ItemJsonConverter))]
     public class Item 
     {
         public string Name { get; set; }

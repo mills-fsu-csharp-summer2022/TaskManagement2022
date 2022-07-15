@@ -57,7 +57,7 @@ namespace Library.TaskManagement.Services
 
         private ItemService()
         {
-            var todosJson = new WebRequestHandler().Get("http://localhost:5017/ToDo").Result;
+            var todosJson = new WebRequestHandler().Get("http://localhost:5017/Item").Result;
             itemList = JsonConvert.DeserializeObject<List<Item>>(todosJson);
 
             listNavigator = new ListNavigator<Item>(itemList);

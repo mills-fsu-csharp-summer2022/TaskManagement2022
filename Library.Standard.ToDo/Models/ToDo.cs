@@ -1,7 +1,10 @@
-﻿using System;
+﻿using Library.Standard.ToDo.Utility;
+using Newtonsoft.Json;
+using System;
 
 namespace Library.TaskManagement.Models
 {
+    [JsonConverter(typeof(ItemJsonConverter))]
     public partial class ToDo: Item
     {
 

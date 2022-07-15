@@ -1,5 +1,6 @@
 ﻿using Library.TaskManagement.Models;
 using Microsoft.AspNetCore.Mvc;
+using TaskApplication.API.Database;
 using TaskApplication.API.EC;
 
 namespace TaskApplication.API.Controllers
@@ -16,9 +17,28 @@ namespace TaskApplication.API.Controllers
         }
 
         [HttpGet]
-        public List<Item> Get()
+        public List<ToDo> Get()
         {
             return new ToDoEC().Get();
+        }
+
+        [HttpPost]
+        public ToDo AddOrUpdate(ToDo todo)
+        {
+            if (todo.Id <= 0)
+            {
+                todo.Id = FakeDatabase.NextId();
+                FakeDatabase.ToDos.Add(todo);
+            }
+
+            var itemToUpdate = FakeDatabase.ToDos.FirstOrDefault(t => t.Id == todo.Id);
+            if(itemToUpdate != null)
+            {
+                FakeDatabase.ToDos.Remove(itemToUpdate);
+                FakeDatabase.ToDos.Add(todo);
+            }
+
+            return todo;
         }
     }
 }

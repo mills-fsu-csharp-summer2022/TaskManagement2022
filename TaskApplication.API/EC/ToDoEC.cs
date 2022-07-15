@@ -5,7 +5,7 @@ namespace TaskApplication.API.EC
 {
     public class ToDoEC
     {
-        public List<Item> Get()
+        public List<ToDo> Get()
         {
             return FakeDatabase.ToDos;
         }
