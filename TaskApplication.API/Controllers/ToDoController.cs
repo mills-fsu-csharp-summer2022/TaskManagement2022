@@ -22,7 +22,7 @@ namespace TaskApplication.API.Controllers
             return new ToDoEC().Get();
         }
 
-        [HttpPost]
+        [HttpPost("AddOrUpdate")]
         public ToDo AddOrUpdate(ToDo todo)
         {
             if (todo.Id <= 0)
@@ -39,6 +39,23 @@ namespace TaskApplication.API.Controllers
             }
 
             return todo;
+        }
+
+        [HttpGet("Delete/{id}")]
+        public int Delete(int id)
+        {
+            var itemToDelete = FakeDatabase.Items.FirstOrDefault(i => i.Id == id);
+            if(itemToDelete != null)
+            {
+                var item = itemToDelete as ToDo;
+                if(item != null)
+                {
+                    FakeDatabase.ToDos.Remove(item);
+                }
+
+            }
+
+            return id;
         }
     }
 }

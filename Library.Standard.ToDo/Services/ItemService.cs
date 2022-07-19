@@ -66,22 +66,41 @@ namespace Library.TaskManagement.Services
 
         public void AddOrUpdate(Item todo)
         {
-            if (todo.Id <= 0)
+            if(todo is ToDo)
             {
-                todo.Id = NextId;
-                Items.Add(todo);
-            }
+                var response = new WebRequestHandler().Post("http://localhost:5017/ToDo/AddOrUpdate", todo).Result;
+                var newToDo = JsonConvert.DeserializeObject<ToDo>(response);
 
+                var oldVersion = itemList.FirstOrDefault(i => i.Id == newToDo.Id);
+                if(oldVersion != null)
+                {
+                    var index = itemList.IndexOf(oldVersion);
+                    itemList.RemoveAt(index);
+                    itemList.Insert(index, newToDo);
+                } else
+                {
+                    itemList.Add(newToDo);
+                }
+
+            } else if (todo is Appointment)
+            {
+                var response = new WebRequestHandler().Post("http://localhost:5017/Appointment", todo).Result;
+                var newToDo = JsonConvert.DeserializeObject<Appointment>(response);
+                itemList.Add(newToDo);
+            }
+            
         }
 
         public void Delete(int id)
         {
+            var response = new WebRequestHandler().Get($"http://localhost:5017/ToDo/Delete/{id}");
             var todoToDelete = itemList.FirstOrDefault(t => t.Id == id);
             if (todoToDelete == null)
             {
                 return;
             }
             itemList.Remove(todoToDelete);
+
         }
 
         public void Load(string fileName = null)
